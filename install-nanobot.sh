@@ -35,7 +35,9 @@ else
     exit 1
 fi
 
-echo '  _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____
+cat << 'EOF'
+
+  _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____
  |_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|
 
 
@@ -56,6 +58,8 @@ echo '  _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____
  _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____
 |_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|'
 
+EOF
+sleep 1
 echo ""
 echo "This script installs nanobot for you. Dependencies:"
 echo "    - Modern linux/posix-compatible system"
@@ -78,7 +82,7 @@ if [ "$user_choice" = "2" ]; then
     exit 0
 fi
 
-echo '
+cat << 'EOF'
  ____  _               _
 / ___|| |_ ___ _ __   / |
 \___ \| __/ _ \ '_ \  | |  _____
@@ -91,8 +95,8 @@ echo '
 |  __/| | |  __/ |_) | (_| | | | (_| | |_| | (_) | | | |
 |_|   |_|  \___| .__/ \__,_|_|  \__,_|\__|_|\___/|_| |_|
                |_|
-'
-
+EOF
+sleep 2
 echo "Installing base dependencies..."
 $PKG_INSTALL_CMD make wget git nano $BUILD_DEPS
 
@@ -134,9 +138,10 @@ nanobot gateway
 EOF
 chmod +x /opt/nanobot/run.sh
 
-cd /tmp
+cd /opt/nanobot
+. venv/bin/activate
 
-echo '
+cat << 'EOF'
  ____  _               ____
 / ___|| |_ ___ _ __   |___ \
 \___ \| __/ _ \ '_ \    __) |  _____
@@ -149,12 +154,14 @@ echo '
 | |\  | (_| | | | | (_) | |_) | (_) | |_   | || | | \__ \ || (_| | | |
 |_| \_|\__,_|_| |_|\___/|_.__/ \___/ \__| |___|_| |_|___/\__\__,_|_|_|
 
-'
-
+EOF
+sleep 2
+mkdir -p tmp
+cd tmp
 git clone https://github.com/HKUDS/nanobot
 cd nanobot
-/opt/nanobot/venv/bin/pip install -e .
-/opt/nanobot/venv/bin/nanobot onboard
+pip install -e .
+nanobot onboard
 
 echo ""
 echo "You'll now be editing the config.json to set your api provider and integrations."
@@ -182,7 +189,7 @@ echo "Type 'exit' when done."
 echo ""
 sudo -u nanobot -i
 
-echo '
+cat << 'EOF'
  ____  _               _____
 / ___|| |_ ___ _ __   |___ /
 \___ \| __/ _ \ '_ \    |_ \   _____
@@ -195,8 +202,8 @@ echo '
  ___) | |_| \__ \ ||  __/ | | | | | (_| | | |_| | | | | | |_
 |____/ \__, |___/\__\___|_| |_| |_|\__,_|  \___/|_| |_|_|\__|
        |___/
-'
-
+EOF
+sleep 2
 tee /etc/systemd/system/nanobot.service << 'EOF'
 [Unit]
 Description=Nanobot Service
@@ -232,10 +239,12 @@ echo "    systemctl enable nanobot --now"
 echo ""
 echo "Nanobot will run now and on subsequent boots after running these commands."
 
-echo '
+cat << 'EOF'
 __   __          _            ____                       ____  _
 \ \ / /__  _   _( )_ __ ___  |  _ \  ___  _ __   ___   _|  _ \| |
  \ V / _ \| | | |/| '__/ _ \ | | | |/ _ \| '_ \ / _ \ (_) | | | |
   | | (_) | |_| | | | |  __/ | |_| | (_) | | | |  __/  _| |_| |_|
   |_|\___/ \__,_| |_|  \___| |____/ \___/|_| |_|\___| (_)____/(_)
-'
+
+EOF
+sleep 1
